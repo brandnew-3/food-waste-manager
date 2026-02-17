@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Food Waste Management – Admin</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#4F7942',
+            charcoal: '#333'
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-gray-100 font-sans text-charcoal">
+
+  <div class="min-h-screen flex">
+
+    <!-- Sidebar -->
+    <aside class="hidden md:flex w-64 bg-white shadow-md flex-col">
+      <div class="p-6 text-lg font-semibold text-primary">
+        Food Waste Management
+      </div>
+      <nav class="flex-1 px-4 space-y-3">
+        <a class="block p-3 rounded bg-gray-100 font-medium">Dashboard</a>
+        <a class="block p-3 rounded hover:bg-gray-100">All Food Records</a>
+      </nav>
+    </aside>
+
+    <!-- Main -->
+    <main class="flex-1 p-6">
+
+      <header class="mb-6">
+        <h1 class="text-2xl font-semibold">Stored Food Records</h1>
+        <p class="text-sm text-gray-500">View-only public & admin dashboard</p>
+      </header>
+
+      <section class="bg-white rounded-xl shadow p-6">
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="border-b text-gray-500">
+              <tr>
+                <th class="p-3 text-left">Source</th>
+                <th class="p-3 text-left">Category</th>
+                <th class="p-3 text-left">Quantity</th>
+                <th class="p-3 text-left">Status</th>
+                <th class="p-3 text-left">Phone</th>
+                <th class="p-3 text-left">Location</th>
+                <th class="p-3 text-left">Date & Time</th>
+              </tr>
+            </thead>
+            <tbody id="foodTableBody"></tbody>
+          </table>
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+
+  <!-- JS -->
+  <script src="script.js"></script>
+  <script>
+    loadStoredFood();
+  </script>
+
+</body>
+</html>

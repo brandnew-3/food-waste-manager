@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodCycle Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { primary: '#4F7942', charcoal: '#333' },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-gray-100 font-sans text-charcoal">
+
+    <div class="flex min-h-screen">
+
+        <!-- Sidebar -->
+        <aside
+            class="w-64 bg-primary text-white p-6 shadow-lg fixed h-full z-10 transition-transform -translate-x-full md:translate-x-0 md:relative">
+            <h1 class="text-2xl font-bold mb-8 flex items-center gap-2">
+                <span>FoodCycle</span>
+                <span class="text-xs bg-white text-primary px-2 py-1 rounded">Admin</span>
+            </h1>
+
+            <nav class="flex flex-col gap-2">
+                <button onclick="showSection('addFoodSection')"
+                    class="text-left px-4 py-3 rounded-lg hover:bg-white/10 transition flex items-center gap-3">
+                    <span>📝 Submit Food</span>
+                </button>
+                <button onclick="showSection('storedFood')"
+                    class="text-left px-4 py-3 rounded-lg hover:bg-white/10 transition flex items-center gap-3">
+                    <span>📦 View Inventory</span>
+                </button>
+                <div class="mt-8 border-t border-white/20 pt-4">
+                    <a href="index.html" class="block px-4 py-2 hover:text-green-200 text-sm">← Back to Public Site</a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8 ml-0 md:ml-0 w-full overflow-hidden">
+
+            <!-- Submit Food Section -->
+            <section id="addFoodSection" class="section">
+                <div class="max-w-2xl mx-auto">
+                    <h2 class="text-2xl font-bold mb-6">Submit New Surplus</h2>
+
+                    <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+                        <div class="space-y-5">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                <div>
+                                    <label class="block text-sm font-medium mb-1 text-gray-600">Source</label>
+                                    <select id="source"
+                                        class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition">
+                                        <option value="">Select Source</option>
+                                        <option>Home</option>
+                                        <option>Hotel</option>
+                                        <option>Event</option>
+                                        <option>Restaurant</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-1 text-gray-600">Category</label>
+                                    <select id="category"
+                                        class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition">
+                                        <option value="">Select Category</option>
+                                        <option>Veg</option>
+                                        <option>Non-Veg</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium mb-1 text-gray-600">Quantity</label>
+                                <input id="quantity" type="text" placeholder="e.g. 5kg, 10 plates"
+                                    class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition" />
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                <div>
+                                    <label class="block text-sm font-medium mb-1 text-gray-600">Contact Phone</label>
+                                    <input id="phone" type="text" placeholder="Enter phone number"
+                                        class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition" />
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-1 text-gray-600">Location</label>
+                                    <input id="location" type="text" placeholder="Area / City"
+                                        class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition" />
+                                </div>
+                            </div>
+
+                            <div
+                                class="flex items-center justify-between p-4 bg-green-50 rounded-lg border border-green-100">
+                                <span class="font-medium text-green-800">Is this food edible?</span>
+                                <input id="status" type="checkbox"
+                                    class="w-5 h-5 text-primary focus:ring-primary rounded">
+                            </div>
+
+                            <button onclick="submitFood()"
+                                class="w-full bg-primary text-white py-3 rounded-lg font-medium hover:bg-green-700 transition shadow-sm hover:shadow-md">
+                                Submit Entry
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- View Food Section -->
+            <section id="storedFood" class="section hidden">
+                <div class="max-w-6xl mx-auto">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-2xl font-bold">Food Inventory</h2>
+                        <button onclick="loadStoredFood()" class="text-sm text-primary hover:underline">Refresh
+                            Data</button>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm text-left">
+                                <thead class="bg-gray-50 text-gray-600 font-medium border-b">
+                                    <tr>
+                                        <th class="p-4">Source</th>
+                                        <th class="p-4">Category</th>
+                                        <th class="p-4">Quantity</th>
+                                        <th class="p-4">Phone</th>
+                                        <th class="p-4">Status</th>
+                                        <th class="p-4">Location</th>
+                                        <th class="p-4">Date & Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="foodList" class="divide-y divide-gray-100">
+                                    <!-- Populated by script.js -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Initialize dashboard state
+        // Default showing addFoodSection
+        // Mobile sidebar toggle logic could be added here if needed
+    </script>
+
+</body>
+
+</html>

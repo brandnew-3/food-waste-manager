@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FoodCycle – Public View</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { primary: '#4F7942' },
+          fontFamily: { sans: ['Inter', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-gray-100 font-sans">
+
+  <div class="min-h-screen p-6">
+
+    <!-- Header -->
+    <header class="text-center mb-8">
+      <h1 class="text-3xl font-bold text-primary">FoodCycle</h1>
+      <p class="text-gray-500">Add and view available surplus food</p>
+      <div class="mt-4">
+        <a href="index.html" class="text-primary hover:underline font-medium">← Back to Add Food</a>
+      </div>
+    </header>
+
+    <!-- Submission Form -->
+    <section class="bg-white rounded-xl shadow p-6 max-w-xl mx-auto mb-6">
+      <form id="foodForm">
+        <div class="mb-4">
+          <label class="block mb-1">Source</label>
+          <input type="text" id="source" class="w-full border p-2 rounded" required>
+        </div>
+        <div class="mb-4">
+          <label class="block mb-1">Category</label>
+          <input type="text" id="category" class="w-full border p-2 rounded" required>
+        </div>
+        <div class="mb-4">
+          <label class="block mb-1">Quantity</label>
+          <input type="text" id="quantity" class="w-full border p-2 rounded" required>
+        </div>
+        <div class="mb-4">
+          <label class="block mb-1">Phone</label>
+          <input type="text" id="phone" class="w-full border p-2 rounded" required placeholder="Contact Number">
+        </div>
+        <div class="mb-4">
+          <label class="block mb-1">Location</label>
+          <input type="text" id="location" class="w-full border p-2 rounded" required>
+        </div>
+        <button type="submit" class="bg-primary text-white px-4 py-2 rounded">Submit Food</button>
+      </form>
+    </section>
+
+    <!-- Table to View All Food Entries -->
+    <section class="bg-white rounded-xl shadow p-6 max-w-5xl mx-auto">
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="border-b text-gray-500">
+            <tr>
+              <th class="p-3 text-left">Source</th>
+              <th class="p-3 text-left">Category</th>
+              <th class="p-3 text-left">Quantity</th>
+              <th class="p-3 text-left">Phone</th>
+              <th class="p-3 text-left">Status</th>
+              <th class="p-3 text-left">Location</th>
+              <th class="p-3 text-left">Date & Time</th>
+            </tr>
+          </thead>
+          <tbody id="publicFoodList"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    const API_URL = "http://localhost:3000";
+
+    // Add food entry
+    async function addFood(food) {
+      try {
+        const response = await fetch(`${API_URL}/add-food`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(food)
+        });
+
+        if (response.ok) {
+          alert("Food entry submitted successfully!");
+          document.getElementById("foodForm").reset();
+          loadPublicFood();
+        } else {
+          const error = await response.json();
+          alert("Error: " + (error.message || "Failed to submit"));
+        }
+      } catch (err) {
+        console.error("Error submitting food:", err);
+        alert("Failed to connect to server");
+      }
+    }
+
+    // Load all entries
+    async function loadPublicFood() {
+      try {
+        const response = await fetch(`${API_URL}/foods`);
+        const data = await response.json();
+
+        const tbody = document.getElementById("publicFoodList");
+        tbody.innerHTML = data.map(food => `
+      <tr class="border-b hover:bg-gray-50">
+        <td class="p-3">${food.source}</td>
+        <td class="p-3">${food.category}</td>
+        <td class="p-3">${food.quantity}</td>
+        <td class="p-3">${food.phone}</td>
+        <td class="p-3">${food.status}</td>
+        <td class="p-3">${food.location}</td>
+        <td class="p-3">${food.createdAt || "N/A"}</td>
+      </tr>
+    `).join('');
+      } catch (err) {
+        console.error("Error loading food:", err);
+      }
+    }
+
+    // Handle form submission
+    document.getElementById("foodForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const food = {
+        source: document.getElementById("source").value,
+        category: document.getElementById("category").value,
+        quantity: document.getElementById("quantity").value,
+        phone: document.getElementById("phone").value,
+        location: document.getElementById("location").value,
+        status: "Available"
+      };
+      addFood(food);
+    });
+
+    // Load table on page load
+    loadPublicFood();
+  </script>
+
+</body>
+
+</html>

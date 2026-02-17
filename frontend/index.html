@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Food Waste Management</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#4F7942',
+            charcoal: '#333'
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-gray-100 font-sans text-charcoal">
+
+  <div class="min-h-screen flex items-center justify-center p-4">
+
+    <section class="bg-white rounded-xl shadow-lg p-8 w-full max-w-xl">
+
+      <!-- Logo -->
+      <div class="text-center mb-6">
+        <h1 class="text-3xl font-bold">
+          <span class="text-primary">Food</span>
+          <span class="text-charcoal">Cycle</span>
+        </h1>
+        <p class="text-sm text-gray-500">Reduce waste • Feed people • Protect planet</p>
+        <div class="mt-4">
+          <a href="public.html" class="text-primary hover:underline font-medium">View Available Food</a>
+        </div>
+      </div>
+
+      <h2 class="text-lg font-semibold mb-4">Add Surplus Food</h2>
+
+      <div class="space-y-4">
+
+        <select id="source" class="w-full p-3 border rounded-lg">
+          <option value="">Food Source</option>
+          <option>Home</option>
+          <option>Hotel</option>
+          <option>Event</option>
+        </select>
+
+        <select id="category" class="w-full p-3 border rounded-lg">
+          <option value="">Food Category</option>
+          <option>Veg</option>
+          <option>Non-Veg</option>
+        </select>
+
+        <input id="quantity" type="text" placeholder="Quantity (kg / plates)" class="w-full p-3 border rounded-lg" />
+        <input id="phone" type="text" placeholder="Contact Phone Number" class="w-full p-3 border rounded-lg" />
+        <input id="location" type="text" placeholder="Location (Area / City)" class="w-full p-3 border rounded-lg" />
+
+        <label class="flex items-center justify-between">
+          <span class="font-medium">Edible</span>
+          <input id="status" type="checkbox" class="scale-125">
+        </label>
+
+        <button type="button" onclick="submitFood()"
+          class="w-full bg-primary text-white py-3 rounded-lg font-medium hover:opacity-90 transition">
+          Save Entry
+        </button>
+
+      </div>
+
+  </div>
+
+  <div class="mt-8 text-center border-t pt-4">
+    <a href="dashboard.html" class="text-xs text-gray-400 hover:text-primary transition">Admin Dashboard</a>
+  </div>
+
+  </section>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
